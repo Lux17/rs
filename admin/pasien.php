@@ -1,15 +1,18 @@
 <?php
   include('koneksi.php'); 
-  $query = mysqli_query($kon, "SELECT max(kd_petugas) as kode_petugas FROM petugas");
-  $data = mysqli_fetch_array($query);
-  $kodepetugas = $data['kode_petugas'];
+  session_start();   
 
-  $urutan = (int) substr($kodepetugas, 3, 3);
+  $query = mysqli_query($kon, "SELECT max(kd_pasien) as kode_pasien FROM pasien");
+  $data = mysqli_fetch_array($query);
+  $kodepasien = $data['kode_pasien'];
+
+  $urutan = (int) substr($kodepasien, 3, 3);
 
   $urutan++;
 
-  $huruf = "E";
-  $kodepetugas= $huruf . sprintf("%03s", $urutan);
+  $huruf = "P";
+  $kodepasien= $huruf . sprintf("%03s", $urutan);
+
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +26,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sistem Informasi & Registrasi PKL- Dashboard</title>
+    <title>Sistem Informasi Pelayanan Rumah Sakit- Pasien</title>
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -72,7 +75,7 @@
         </div>
         
         <!-- Nav Item - Tables -->
-        <li class="nav-item ">
+        <li class="nav-item active">
             <a class="nav-link" href="pasien.php">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Pasien</span></a>
@@ -85,7 +88,7 @@
                     <span>Dokter</span></a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="petugas.php">
                     <i class="fas fa-fw fa-landmark"></i>
                     <span>Petugas</span></a>
@@ -122,6 +125,7 @@
                         <i class="fas fa-fw fa-user-circle"></i>
                         <span>Akun</span></a>
                 </li>
+
 
         <!-- Nav Item - Charts -->
 
@@ -171,11 +175,26 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">                               
-      
+                                 <?php
+                                echo $_SESSION['username'];
+                                ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <!-- <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a> -->
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                   Keluar
+                                </a>
+                            </div>
                         </li>
 
                     </ul>
@@ -187,13 +206,13 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Petugas</h1>
-                    <p class="mb-4">Daftar List Petugas .</p>
+                    <h1 class="h3 mb-2 text-gray-800">Pasien</h1>
+                    <p class="mb-4">Daftar List Pasien .</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-danger">Data Tabel Petugas</h6>
+                            <h6 class="m-0 font-weight-bold text-danger">Data Tabel Pasien</h6>
                         </div>
 
                 
@@ -205,7 +224,7 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-  Tambah Petugas
+  Tambah Pasien
 </button>
                 
                     </div>
@@ -218,42 +237,68 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Petugas</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Pasien</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            <form method="POST" action="petugas/tambah_petugas.php" enctype="multipart/form-data" >
+            <form method="POST" action="pasien/tambah_pasien.php" enctype="multipart/form-data" >
                         <section class="base align-items-center ">
-                            <div class="row mb-3">
+
+                        <div class="row mb-3">
                             <div class="col-sm-8">
-                            <input type="hidden" class="form-control" name="kd_petugas" value="<?php echo $kodepetugas?>" />
-                            </div>
-                            </div>
-                  
+                            <input type="hidden" class="form-control" name="kd_pasien" value="<?php echo $kodepasien ?>" />
+                        </div>
+                    </div>
                             <div class="row mb-3">
                             <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
                             <div class="col-sm-8">
-                            <input type="text" class="form-control" name="nama_petugas" autofocus="" required=""  />
+                            <input type="text" class="form-control" name="nama_pasien" autofocus="" required=""  />
                         </div>
                     </div>
                     
                             <div class="row mb-3">
                             <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
                             <div class="col-sm-8">
-                            <textarea type="text" class="form-control" name="alamat_petugas" required="" > </textarea>
+                            <textarea type="text" class="form-control" name="alamat_pasien" required="" > </textarea>
+                            </div>
+                            </div>
+
+                            <div class="row mb-3">
+                            <label for="tgl" class="col-sm-3 col-form-label">TGL Datang</label>
+                            <div class="col-sm-8">
+                            <input type="date" class="form-control" name="tgl_datang" />
                             </div>
                             </div>
                   
                             <div class="row mb-3">
-                            <label for="jam_jaga" class="col-sm-3 col-form-label">Jam Jaga</label>
+                            <label for="keluhan" class="col-sm-3 col-form-label">Keluhan</label>
                             <div class="col-sm-8">
-                            <input type="time" class="form-control" name="jam_jaga" />
+                            <textarea type="text" class="form-control" name="keluhan" > </textarea>
                             </div>
                             </div>
                   
-
+                            <div class="row mb-3">
+                            <label class="col-sm-3">Dokter</label>
+                            <div class="input-group col-sm-8">
+                                <select class="custom-select" id="kd_dokter" name="kd_dokter" required="" >
+                                <option selected value="">Pilih</option> 
+                                <option value="D001">Dr. Adik - Penyakit Dalam</option>
+                                <option value="D002">Dr. Lukman - Dokter Umum</option>
+                                <option value="D003">Dr. Adi - Dokter Anak</option>
+                                <option value="D004">Dr. Nana - Dokter Umum</option>
+                                <option value="D005">Dr. Masduki - THT</option>
+                                <option value="D006">Dr. Annisa - Dokter Kandungan</option>
+                                <option value="D007">Dr. Hadi Suproyadi - Radiologi</option>
+                                <option value="D008">Dr. Grealdine - Dokter Gigi</option>
+                                <option value="D009">Dr. Faisal Rahman - Dokter Mata</option>
+                                <option value="D010">Dr. Bobi Sunandar - Dokter Bedah</option>
+                                </select>
+                                <div class="input-group-append">
+                            </div>
+                            </div>
+                            </div>
 
       
                             
@@ -271,11 +316,13 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Kode Petugas</th>
+                                            <th>Kode Pasien</th>
                                             <th>Nama</th>
                                             <th>Alamat</th>
-                                            <th>Jam Jaga</th>
-                                            
+                                            <th>TGL Datang</th>
+                                            <th>Keluhan</th>
+                                            <th>Nama Dokter</th>
+                                            <th>Spesialisasi</th>
                                         
                                             <th></th>
                                         </tr>
@@ -283,18 +330,20 @@
                                     <tfoot>
                                         <tr>
                                         <th>No</th>
-                                            <th>Kode petugas</th>
+                                            <th>Kode Pasien</th>
                                             <th>Nama</th>
                                             <th>Alamat</th>
-                                            <th>Jam Jaga</th>
-                                            
+                                            <th>TGL Datang</th>
+                                            <th>Keluhan</th>
+                                            <th>Nama Dokter</th>
+                                            <th>Spesialisasi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                     <?php
                            
                                     // jalankan query untuk menampilkan semua data diurutkan berdasarkan 
-                                    $query = "SELECT * FROM petugas ORDER BY kd_petugas ASC";
+                                    $query = "SELECT p.kd_pasien,p.nama_pasien,p.alamat_pasien,p.keluhan,p.kd_dokter,p.tgl_datang,d.nama_dokter,d.spesialisasi FROM pasien p INNER JOIN dokter d ON d.kd_dokter=p.kd_dokter";
                                     $result = mysqli_query($kon, $query);
                                     //mengecek apakah ada error ketika menjalankan query
                                     if(!$result){
@@ -302,7 +351,7 @@
                                         " - ".mysqli_error($kon));
                                     }
 
-                                    //buat perulangan untuk element tabel dari data petugas
+                                    //buat perulangan untuk element tabel dari data pasien
                                     $no = 1; //variabel untuk membuat nomor urut
                                     // hasil query akan disimpan dalam variabel $data dalam bentuk array
                                     // kemudian dicetak dengan perulangan while
@@ -311,69 +360,145 @@
                                     ?>
                                     <tr>
                                         <td><?php echo $no; ?></td>
-                                        <td><?php echo $row['kd_petugas']; ?></td>
-                                        <td><?php echo $row['nama_petugas']; ?></td>
-                                        <td><?php echo substr($row['alamat_petugas'], 0, 20); ?>...</td>
-                                        <td><?php echo $row['jam_jaga']; ?></td>
+                                        <td><?php echo $row['kd_pasien']; ?></td>
+                                        <td><?php echo $row['nama_pasien']; ?></td>
+                                        <td><?php echo substr($row['alamat_pasien'], 0, 20); ?>...</td>
+                                        <td><?php echo $row['tgl_datang']; ?></td>
+                                        <td><?php echo $row['keluhan']; ?></td>
+                                        <td><?php echo $row['nama_dokter']; ?></td> 
+                                        <td><?php echo $row['spesialisasi']; ?></td>  
                                         
                                        
                                 
                                         
 
                                         <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalliat<?php echo $row['kd_petugas'];?>">
-                            Lihat
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalliat<?php echo $row['kd_pasien'];?>">
+                            Detail
                             </button>
 
                                         |
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modalubah<?php echo $row['kd_petugas'];?>">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modalubah<?php echo $row['kd_pasien'];?>">
                             Ubah
                             </button>
    
-        <div class="modal fade" id="Modalubah<?php echo $row['kd_petugas'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="Modalubah<?php echo $row['kd_pasien'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Petugas</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit pasien</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            <form method="POST" action="petugas/edit_petugas.php" enctype="multipart/form-data" >
+            <form method="POST" action="pasien/edit_pasien.php" enctype="multipart/form-data" >
             
                         <section class="base align-items-center ">
-                        
-                        <div class="row mb-3">
-                        <div class="col-sm-8">
-                        <input type="hidden" class="form-control" value="<?php echo $row['kd_petugas']; ?>" name="kd_petugas"  autofocus="" required="" />
+                        <div>
+                            <input type="hidden" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
                         </div>
-                        </div>
-
                         <div class="row mb-3">
                         <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-8">
-                        <input type="text" class="form-control" value="<?php echo $row['nama_petugas']; ?>" name="nama_petugas" autofocus="" required="" />
+                        <input type="text" class="form-control" value="<?php echo $row['nama_pasien']; ?>" name="nama_pasien" autofocus="" required="" />
                         </div>
                         </div>
 
                         <div class="row mb-3">
                         <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
                         <div class="col-sm-8">
-                        <textarea type="text" class="form-control" value="<?php echo $row['alamat_petugas']; ?>" name="alamat_petugas" required="" ><?php echo $row['alamat_petugas']; ?></textarea>
+                        <textarea type="text" class="form-control" value="<?php echo $row['alamat_pasien']; ?>" name="alamat_pasien" required="" > <?php echo $row['alamat_pasien']; ?></textarea>
                         </div>
                         </div>
 
                         
+                        <div class="row mb-3">
+                        <label for="TGL" class="col-sm-3 col-form-label">TGl Datang</label>
+                        <div class="col-sm-8">
+                        <input type="date" class="form-control" value="<?php echo $row['tgl_datang']; ?>" name="tgl_datang" required="" />
+                        </div>
+                        </div>
 
                         <div class="row mb-3">
-                        <label for="jam_jaga" class="col-sm-3 col-form-label">Jam Jaga</label>
+                        <label for="Keluhan" class="col-sm-3 col-form-label">Keluhan</label>
                         <div class="col-sm-8">
-                        <input type="time" class="form-control" value="<?php echo $row['jam_jaga']; ?>" name="jam_jaga" required="" />
+                        <textarea type="text" class="form-control" value="<?php echo $row['keluhan']; ?>" name="keluhan" required="" ><?php echo $row['keluhan']; ?> </textarea>
                         </div>
                         </div>
 
+                        <div class="row mb-3">
+                        <label for="kd_dokter" class="col-sm-3 col-form-label">Kode Dokter</label>
+                        <div class="col-sm-8">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_dokter']; ?>" name="kode_dokter" readonly/>
+                        </div>
+                        </div>
 
+                        <div class="row mb-3">
+                            <label class="col-sm-3">Dokter</label>
+                            <div class="input-group col-sm-8">
+                                <select class="custom-select" id="kd_dokter" name="kd_dokter" required="" >
+                                <option selected value="<?php echo $row['kd_dokter']; ?>">
+                                <?php $kode_dok = $row['kd_dokter'];
+                                switch($kode_dok){
+
+                                    case 'D001':
+                                        echo ('Dr. Adik - Penyakit Dalam');
+                                        break;
+                                    case 'D002':
+                                        echo ('Dr. Lukman - Dokter Umum');
+                                        break;
+                                    case 'D003':
+                                        echo ('Dr. Adi - Dokter Anak');
+                                        break;
+                                    case 'D004':
+                                        echo ('Dr. Nana - Dokter Umum');
+                                        break;
+                                    case 'D005':
+                                        echo ('Dr. Masduki - THT');
+                                        break;
+                                    case 'D006':
+                                        echo ('Dr. Annisa - Dokter Kandungan');
+                                        break;
+                                    case 'D007':
+                                        echo ('Dr. Hadi Suproyadi - Radiologi');
+                                        break;
+                                    case 'D008':
+                                        echo ('Dr. Grealdine - Dokter Gigi');
+                                        break;
+                                    case 'D009':
+                                        echo ('Dr. Faisal Rahman - Dokter Mata');
+                                        break;
+                                    case 'D010':
+                                        echo ('Dr. Bobi Sunandar - Dokter Bedah');
+                                        break;
+                                    default:
+                                    echo "Dokter tidak ditemukan";
+                                    break;
+                                    
+
+
+                                };
+
+                                    
+                                
+                                ?>
+                                </option> 
+                                <option value="D001">Dr. Adik - Penyakit Dalam</option>
+                                <option value="D002">Dr. Lukman - Dokter Umum</option>
+                                <option value="D003">Dr. Adi - Dokter Anak</option>
+                                <option value="D004">Dr. Nana - Dokter Umum</option>
+                                <option value="D005">Dr. Masduki - THT</option>
+                                <option value="D006">Dr. Annisa - Dokter Kandungan</option>
+                                <option value="D007">Dr. Hadi Suproyadi - Radiologi</option>
+                                <option value="D008">Dr. Grealdine - Dokter Gigi</option>
+                                <option value="D009">Dr. Faisal Rahman - Dokter Mata</option>
+                                <option value="D010">Dr. Bobi Sunandar - Dokter Bedah</option>
+                                </select>
+                                <div class="input-group-append">
+                            </div>
+                            </div>
+                            </div>
            
 
                         </section>
@@ -390,11 +515,11 @@
 
 
 
-        <div class="modal fade" id="Modalliat<?php echo $row['kd_petugas'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="Modalliat<?php echo $row['kd_pasien'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Lihat Petugas</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Detail Pasien</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -404,39 +529,83 @@
             
                         <section class="base align-items-center ">
                         <div>
-                            <input type="hidden" value="<?php echo $row['kd_petugas']; ?>" name="kd_petugas" required="" />
+                            <input type="hidden" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
                         </div>
-                        <div class="row mb-3">
-                        <label for="kode" class="col-sm-3 col-form-label">Kode</label>
-                        <div class="col-sm-8">
-                        <h5>  <?php echo $row['kd_petugas']; ?></h5>
-                        </div>
-                        </div>
-
                         <div class="row mb-3">
                         <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-8">
-                        <h5>  <?php echo $row['nama_petugas']; ?></h5>
+                        <h5>  <?php echo $row['nama_pasien']; ?></h5>
                         </div>
                         </div>
 
                         <div class="row mb-3">
                         <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
                         <div class="col-sm-8">
-                        <h5>  <?php echo $row['alamat_petugas']; ?></h5>
-                    </div>
+                        <h5> <?php echo $row['alamat_pasien']; ?></h5>
+                        </div>
                         </div>
 
                         
-
                         <div class="row mb-3">
-                        <label for="jam_jaga" class="col-sm-3 col-form-label">Jam Jaga</label>
+                        <label for="TGL" class="col-sm-3 col-form-label">TGl Datang</label>
                         <div class="col-sm-8">
-                        <h5>  <?php echo $row['jam_jaga']; ?></h5>
-                    </div>
+                        <h5> <?php echo $row['tgl_datang']; ?></h5>
+                       </div>
                         </div>
 
-           
+                        <div class="row mb-3">
+                        <label for="Keluhan" class="col-sm-3 col-form-label">Keluhan</label>
+                        <div class="col-sm-8">
+                        <h5> <?php echo $row['keluhan']; ?></h5>
+                        </div>
+                        </div>
+
+                        <div class="row mb-3">
+                        <label for="nm_dokter" class="col-sm-3 col-form-label">Dokter</label>
+                        <div class="col-sm-8">
+                        <h5><?php $kode_dok = $row['kd_dokter'];
+                                switch($kode_dok){
+
+                                    case 'D001':
+                                        echo ('Dr. Adik - Penyakit Dalam');
+                                        break;
+                                    case 'D002':
+                                        echo ('Dr. Lukman - Dokter Umum');
+                                        break;
+                                    case 'D003':
+                                        echo ('Dr. Adi - Dokter Anak');
+                                        break;
+                                    case 'D004':
+                                        echo ('Dr. Nana - Dokter Umum');
+                                        break;
+                                    case 'D005':
+                                        echo ('Dr. Masduki - THT');
+                                        break;
+                                    case 'D006':
+                                        echo ('Dr. Annisa - Dokter Kandungan');
+                                        break;
+                                    case 'D007':
+                                        echo ('Dr. Hadi Suproyadi - Radiologi');
+                                        break;
+                                    case 'D008':
+                                        echo ('Dr. Grealdine - Dokter Gigi');
+                                        break;
+                                    case 'D009':
+                                        echo ('Dr. Faisal Rahman - Dokter Mata');
+                                        break;
+                                    case 'D0010':
+                                        echo ('Dr. Bobi Sunandar - Dokter Bedah');
+                                        break;
+                                    default:
+                                    echo "Dokter tidak ditemukan";
+                                    break;
+                                    
+
+
+                                }; 
+                                ?></h5>
+                        </div>
+                        </div>
 
                         </section>
                         
@@ -450,7 +619,7 @@
         </div>
 
                                         |
-                                            <a href="petugas/hapus_petugas.php?id=<?php echo $row['kd_petugas']; ?>" onclick="return confirm('Anda yakin akan menghapus data ini?')">Hapus</a>
+                                            <a href="pasien/hapus_pasien.php?id=<?php echo $row['kd_pasien']; ?>" onclick="return confirm('Anda yakin akan menghapus data ini?')">Hapus</a>
                                         </td>
                                     </tr>
                                         

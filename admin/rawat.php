@@ -1,16 +1,6 @@
 <?php
   include('koneksi.php'); 
-
-  $query = mysqli_query($kon, "SELECT max(kd_dokter) as kode_dokter FROM dokter");
-  $data = mysqli_fetch_array($query);
-  $kodedokter = $data['kode_dokter'];
-
-  $urutan = (int) substr($kodedokter, 3, 3);
-
-  $urutan++;
-
-  $huruf = "D";
-  $kodedokter= $huruf . sprintf("%03s", $urutan);
+  session_start();   
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sistem Informasi & Registrasi PKL- Dashboard</title>
+    <title>Sistem Informasi Pelayanan Rumah Sakit - Rawat Inap</title>
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -80,7 +70,7 @@
         </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="dokter.php">
                     <i class="fas fa-fw fa-user-graduate"></i>
                     <span>Dokter</span></a>
@@ -112,7 +102,7 @@
                         <span>Pembayaran</span></a>
                 </li>
 
-                <li class="nav-item ">
+                <li class="nav-item active">
                     <a class="nav-link " href="rawat.php">
                         <i class="fas fa-fw fa-clipboard-check"></i>
                         <span>Rawat inap</span></a>
@@ -172,12 +162,28 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">                               
-      
+                                 <?php
+                                echo $_SESSION['username'];
+                                ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <!-- <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a> -->
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                   Keluar
+                                </a>
+                            </div>
                         </li>
+
 
                     </ul>
 
@@ -188,13 +194,13 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Dokter</h1>
-                    <p class="mb-4">Daftar List Dokter .</p>
+                    <h1 class="h3 mb-2 text-gray-800">Rawat inap</h1>
+                    <p class="mb-4">Daftar List Rawat inap .</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-danger">Data Tabel Dokter</h6>
+                            <h6 class="m-0 font-weight-bold text-danger">Data Tabel Rawat inap</h6>
                         </div>
 
                 
@@ -206,7 +212,7 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-  Tambah Dokter
+  Tambah Rawat inap
 </button>
                 
                     </div>
@@ -219,53 +225,38 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Dokter</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Rawat inap</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            <form method="POST" action="dokter/tambah_dokter.php" enctype="multipart/form-data" >
+            <form method="POST" action="rawatinap/tambah_rawatinap.php" enctype="multipart/form-data" >
                         <section class="base align-items-center ">
-
-                        <div class="row mb-3">
-                            <div class="col-sm-8">
-                            <input type="hidden" class="form-control" name="kd_dokter" value="<?php echo $kodedokter ?>" />
-                        </div>
-                    </div>
                             <div class="row mb-3">
-                            <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
-                            <div class="col-sm-8">
-                            <input type="text" class="form-control" name="nama_dokter" autofocus="" required=""  />
-                        </div>
-                    </div>
-                    
-                            <div class="row mb-3">
-                            <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
-                            <div class="col-sm-8">
-                            <textarea type="text" class="form-control" name="alamat_dokter" required="" > </textarea>
+                            <label for="kd_rawatinap" class="col-sm-2 col-form-label">Kode rawatinap</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="kd_rawatinap" />
                             </div>
                             </div>
                   
                             <div class="row mb-3">
-                            <label class="col-sm-3"> Spesialisasi</label>
-                            <div class="input-group col-sm-8">
-                                <select class="custom-select" id="spesialisasi" name="spesialisasi" required="" >
-                                <option selected value="">Pilih</option> 
-                                <option value="Dokter Umum">Dokter Umum</option>
-                                <option value="Dokter Anak">Dokter Anak</option>
-                                <option value="Dokter Gigi">Dokter Gigi</option>
-                                <option value="Dokter Bedah">Dokter Bedah</option>
-                                <option value="Dokter Mata">Dokter Mata</option>
-                                <option value="Dokter Kandungan">Dokter Kandungan</option>
-                                <option value="Penyakit Dalam">Penyakit Dalam</option>
-                                <option value="THT">THT</option>
-                                <option value="Radiologi">Radiologi</option>
-                                </select>
-                                <div class="input-group-append">
+                            <label for="kd_ruang" class="col-sm-2 col-form-label">Kode Ruang</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="kd_ruang" autofocus="" required=""  />
+                        </div>
+                    </div>
+                    
+                            <div class="row mb-3">
+                            <label for="kd_pasien" class="col-sm-2 col-form-label">Kode Pasien</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="kd_pasien" required="" />
                             </div>
                             </div>
-                            </div>
+                  
+
+                  
+
 
       
                             
@@ -283,10 +274,9 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Kode dokter</th>
-                                            <th>Nama</th>
-                                            <th>Alamat</th>
-                                            <th>Spesialisasi</th>
+                                            <th>Kode rawatinap</th>
+                                            <th>Kode Ruang</th>
+                                            <th>Kode Pasien</th>
                                             
                                         
                                             <th></th>
@@ -295,10 +285,10 @@
                                     <tfoot>
                                         <tr>
                                         <th>No</th>
-                                            <th>Kode dokter</th>
-                                            <th>Nama</th>
-                                            <th>Alamat</th>
-                                            <th>Spesialisasi</th>
+                                        <th>Kode rawatinap</th>
+                                            <th>Kode Ruang</th>
+                                            <th>Kode Pasien</th>
+                                            
                                             
                                         </tr>
                                     </tfoot>
@@ -306,7 +296,7 @@
                                     <?php
                            
                                     // jalankan query untuk menampilkan semua data diurutkan berdasarkan 
-                                    $query = "SELECT * FROM dokter ORDER BY kd_dokter ASC";
+                                    $query = "SELECT * FROM rawat_inap ORDER BY kd_rawatinap ASC";
                                     $result = mysqli_query($kon, $query);
                                     //mengecek apakah ada error ketika menjalankan query
                                     if(!$result){
@@ -314,7 +304,7 @@
                                         " - ".mysqli_error($kon));
                                     }
 
-                                    //buat perulangan untuk element tabel dari data dokter
+                                    //buat perulangan untuk element tabel dari data rawatinap
                                     $no = 1; //variabel untuk membuat nomor urut
                                     // hasil query akan disimpan dalam variabel $data dalam bentuk array
                                     // kemudian dicetak dengan perulangan while
@@ -323,79 +313,61 @@
                                     ?>
                                     <tr>
                                         <td><?php echo $no; ?></td>
-                                        <td><?php echo $row['kd_dokter']; ?></td>
-                                        <td><?php echo $row['nama_dokter']; ?></td>
-                                        <td><?php echo substr($row['alamat_dokter'], 0, 20); ?>...</td>
-                                        <td><?php echo $row['spesialisasi']; ?></td>
+                                        <td><?php echo $row['kd_rawatinap']; ?></td>
+                                        <td><?php echo $row['kd_ruang']; ?></td>
+                                        <td><?php echo substr($row['kd_pasien'], 0, 20); ?>...</td>
                                         
                                        
                                 
                                         
 
                                         <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalliat<?php echo $row['kd_dokter'];?>">
-                            Lihat
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalliat<?php echo $row['kd_rawatinap'];?>">
+                            Detail
                             </button>
 
                                         |
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modalubah<?php echo $row['kd_dokter'];?>">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modalubah<?php echo $row['kd_rawatinap'];?>">
                             Ubah
                             </button>
    
-        <div class="modal fade" id="Modalubah<?php echo $row['kd_dokter'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="Modalubah<?php echo $row['kd_rawatinap'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Dokter</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Rawat inap</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            <form method="POST" action="dokter/edit_dokter.php" enctype="multipart/form-data" >
+            <form method="POST" action="rawatinap/edit_rawatinap.php" enctype="multipart/form-data" >
             
                         <section class="base align-items-center ">
 
                         <div class="row mb-3">
-                        <div class="col-sm-8">
-                        <input type="hidden" class="form-control" value="<?php echo $row['kd_dokter']; ?>" name="kd_dokter"  autofocus="" required="" />
+                        <label for="kd_rawatinap" class="col-sm-2 col-form-label">Kode rawatinap</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_rawatinap']; ?>" name="kd_rawatinap"  autofocus="" required="" />
                         </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
-                        <div class="col-sm-8">
-                        <input type="text" class="form-control" value="<?php echo $row['nama_dokter']; ?>" name="nama_dokter" autofocus="" required="" />
+                        <label for="Nama" class="col-sm-2 col-form-label">Kode Ruang</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_ruang']; ?>" name="kd_ruang" autofocus="" required="" />
                         </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
-                        <div class="col-sm-8">
-                        <textarea type="text" class="form-control" value="<?php echo $row['alamat_dokter']; ?>" name="alamat_dokter" required="" ><?php echo $row['alamat_dokter']; ?> </textarea>
+                        <label for="Alamat" class="col-sm-2 col-form-label">Kode Pasien</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
                         </div>
                         </div>
 
+                    
 
-                        <div class="row mb-3">
-                            <label class="col-sm-3"> Spesialisasi</label>
-                            <div class="input-group col-sm-8">
-                                <select class="custom-select" id="spesialisasi" name="spesialisasi" required="" >
-                                <option selected ><?php echo $row['spesialisasi']; ?></option> 
-                                <option value="Dokter Umum">Dokter Umum</option>
-                                <option value="Dokter Anak">Dokter Anak</option>
-                                <option value="Dokter Gigi">Dokter Gigi</option>
-                                <option value="Dokter Bedah">Dokter Bedah</option>
-                                <option value="Dokter Mata">Dokter Mata</option>
-                                <option value="Dokter Kandungan">Dokter Kandungan</option>
-                                <option value="Penyakit Dalam">Penyakit Dalam</option>
-                                <option value="THT">THT</option>
-                                <option value="Radiologi">Radiologi</option>
-                                </select>
-                                <div class="input-group-append">
-                            </div>
-                            </div>
-                            </div>
            
 
                         </section>
@@ -412,11 +384,11 @@
 
 
 
-        <div class="modal fade" id="Modalliat<?php echo $row['kd_dokter'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="Modalliat<?php echo $row['kd_rawatinap'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Lihat dokter</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Lihat Rawat inap</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -426,34 +398,26 @@
             
                         <section class="base align-items-center ">
                         <div>
-                            <input type="hidden" value="<?php echo $row['kd_dokter']; ?>" name="kd_dokter" required="" />
+                            <input type="hidden" value="<?php echo $row['kd_rawatinap']; ?>" name="kd_rawatinap" required="" />
                         </div>
                         <div class="row mb-3">
-                        <label for="kode" class="col-sm-3 col-form-label">Kode</label>
-                        <div class="col-sm-8">
-                        <h5>  <?php echo $row['kd_dokter']; ?></h5>
+                        <label for="kode" class="col-sm-2 col-form-label">Kode rawatinap</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_rawatinap']; ?>" name="kd_rawatinap" autofocus="" required="" />
                         </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
-                        <div class="col-sm-8">
-                        <h5>  <?php echo $row['nama_dokter']; ?></h5></div>
+                        <label for="Nama" class="col-sm-2 col-form-label">Kode Ruang</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_ruang']; ?>" name="kd_ruang" autofocus="" required="" />
+                        </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
-                        <div class="col-sm-8">
-                        <h5>  <?php echo $row['alamat_dokter']; ?></h5>
-                        </div>
-                        </div>
-
-                        
-
-                        <div class="row mb-3">
-                        <label for="spesialisasi" class="col-sm-3 col-form-label">Spesialisasi</label>
-                        <div class="col-sm-8">
-                        <h5>  <?php echo $row['spesialisasi']; ?></h5>
+                        <label for="Alamat" class="col-sm-2 col-form-label">Kode Pasien</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
                         </div>
                         </div>
 
@@ -471,7 +435,7 @@
         </div>
 
                                         |
-                                            <a href="dokter/hapus_dokter.php?id=<?php echo $row['kd_dokter']; ?>" onclick="return confirm('Anda yakin akan menghapus data ini?')">Hapus</a>
+                                            <a href="rawatinap/hapus_rawatinap.php?id=<?php echo $row['kd_rawatinap']; ?>" onclick="return confirm('Anda yakin akan menghapus data ini?')">Hapus</a>
                                         </td>
                                     </tr>
                                         

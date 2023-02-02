@@ -2,7 +2,7 @@
 $host="localhost";
 $user="root";
 $password="";
-$db="pkl";
+$db="db_rumahsakit";
 
 $kon = mysqli_connect($host,$user,$password,$db);
 if (!$kon){

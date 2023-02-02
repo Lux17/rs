@@ -1,15 +1,6 @@
 <?php
   include('koneksi.php'); 
-  $query = mysqli_query($kon, "SELECT max(kd_ruang) as kode_ruang FROM ruang");
-  $data = mysqli_fetch_array($query);
-  $koderuang = $data['kode_ruang'];
-
-  $urutan = (int) substr($koderuang, 3, 3);
-
-  $urutan++;
-
-  $huruf = "R";
-  $koderuang= $huruf . sprintf("%03s", $urutan);
+  session_start();   
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sistem Informasi & Registrasi PKL- Dashboard</title>
+    <title>Sistem Informasi Pelayanan Rumah Sakit - Pembayaran</title>
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -92,7 +83,7 @@
             </li>
         <!-- Nav Item - Pages Collapse Menu -->
 
-                <li class="nav-item active">
+                <li class="nav-item">
                             <a class="nav-link" href="ruang.php">
                                 <i class="fas fa-fw fa-clipboard-check"></i>
                                 <span>Ruang</span></a>
@@ -105,7 +96,7 @@
                     Kelola
                 </div>
 
-                <li class="nav-item ">
+                <li class="nav-item active">
                     <a class="nav-link " href="pembayaran.php">
                         <i class="fas fa-fw fa-clipboard-check"></i>
                         <span>Pembayaran</span></a>
@@ -171,13 +162,27 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">                               
-      
+                                 <?php
+                                echo $_SESSION['username'];
+                                ?>
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <!-- <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a> -->
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                   Keluar
+                                </a>
+                            </div>
                         </li>
-
                     </ul>
 
                 </nav>
@@ -187,13 +192,13 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Ruang</h1>
-                    <p class="mb-4">Daftar List Ruang .</p>
+                    <h1 class="h3 mb-2 text-gray-800">Pembayaran</h1>
+                    <p class="mb-4">Daftar List Pembayaran .</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-danger">Data Tabel Ruang</h6>
+                            <h6 class="m-0 font-weight-bold text-danger">Data Tabel Pembayaran</h6>
                         </div>
 
                 
@@ -205,7 +210,7 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-  Tambah Ruang
+  Tambah Pembayaran
 </button>
                 
                     </div>
@@ -218,40 +223,39 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Ruang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Pembayaran</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            <form method="POST" action="ruang/tambah_ruang.php" enctype="multipart/form-data" >
+            <form method="POST" action="pembayaran/tambah_pembayaran.php" enctype="multipart/form-data" >
                         <section class="base align-items-center ">
                             <div class="row mb-3">
-
-                            <div class="col-sm-8">
-                            <input type="hidden" class="form-control" name="kd_ruang"  value="<?php echo $koderuang?>"  />
+                            <label for="kd_pembayaran" class="col-sm-2 col-form-label">Kode pembayaran</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="kd_pembayaran" />
                             </div>
                             </div>
                   
                             <div class="row mb-3">
-                            <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
-                            <div class="col-sm-8">
-                            <input type="text" class="form-control" name="nama_ruang" autofocus="" required=""  />
+                            <label for="kd_petugas" class="col-sm-2 col-form-label">Kode Petugas</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="kd_petugas" autofocus="" required=""  />
                         </div>
                     </div>
                     
-                    <div class="row mb-3">
-                            <label class="col-sm-3"> Nama Gedung</label>
-                            <div class="input-group col-sm-8">
-                                <select class="custom-select" id="nama_gedung" name="nama_gedung" required="" >
-                                <option selected value="">Pilih</option> 
-                                <option value="Machdor">Machdor</option>
-                                <option value="HJ Djuanda">HJ Djuanda</option>
-                                <option value="KH Masduki">KH Masduki</option>\
-                                <option value="Zainal Mustofa">Zainal Mustofa</option>
-                                </select>
-                                <div class="input-group-append">
+                            <div class="row mb-3">
+                            <label for="kd_pasien" class="col-sm-2 col-form-label">Kode Pasien</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="kd_pasien" required="" />
                             </div>
+                            </div>
+                  
+                            <div class="row mb-3">
+                            <label for="jmlh_harga" class="col-sm-2 col-form-label">Total Harga</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" name="jmlh_harga" />
                             </div>
                             </div>
                   
@@ -273,10 +277,10 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Kode Ruang</th>
-                                            <th>Nama Ruang</th>
-                                            <th>Nama Gedung</th>
-                                          
+                                            <th>Kode pembayaran</th>
+                                            <th>Kode Petugas</th>
+                                            <th>Kode Pasien</th>
+                                            <th>Total Harga</th>
                                             
                                         
                                             <th></th>
@@ -285,10 +289,11 @@
                                     <tfoot>
                                         <tr>
                                         <th>No</th>
-                                            <th>Kode Ruang</th>
-                                            <th>Nama Ruang</th>
-                                            <th>Nama Gedung</th>
-                                           
+                                        <th>Kode pembayaran</th>
+                                            <th>Kode Petugas</th>
+                                            <th>Kode Pasien</th>
+                                            <th>Total Harga</th>
+                                            
                                             
                                         </tr>
                                     </tfoot>
@@ -296,7 +301,7 @@
                                     <?php
                            
                                     // jalankan query untuk menampilkan semua data diurutkan berdasarkan 
-                                    $query = "SELECT * FROM ruang ORDER BY kd_ruang ASC";
+                                    $query = "SELECT * FROM pembayaran ORDER BY kd_pembayaran ASC";
                                     $result = mysqli_query($kon, $query);
                                     //mengecek apakah ada error ketika menjalankan query
                                     if(!$result){
@@ -304,7 +309,7 @@
                                         " - ".mysqli_error($kon));
                                     }
 
-                                    //buat perulangan untuk element tabel dari data ruang
+                                    //buat perulangan untuk element tabel dari data pembayaran
                                     $no = 1; //variabel untuk membuat nomor urut
                                     // hasil query akan disimpan dalam variabel $data dalam bentuk array
                                     // kemudian dicetak dengan perulangan while
@@ -313,69 +318,71 @@
                                     ?>
                                     <tr>
                                         <td><?php echo $no; ?></td>
-                                        <td><?php echo $row['kd_ruang']; ?></td>
-                                        <td><?php echo $row['nama_ruang']; ?></td>
-                                        <td><?php echo $row['nama_gedung']; ?></td>
-
+                                        <td><?php echo $row['kd_pembayaran']; ?></td>
+                                        <td><?php echo $row['kd_petugas']; ?></td>
+                                        <td><?php echo substr($row['kd_pasien'], 0, 20); ?>...</td>
+                                        <td><?php echo $row['jmlh_harga']; ?></td>
+                                        
                                        
                                 
                                         
 
                                         <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalliat<?php echo $row['kd_ruang'];?>">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalliat<?php echo $row['kd_pembayaran'];?>">
                             Lihat
                             </button>
 
                                         |
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modalubah<?php echo $row['kd_ruang'];?>">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modalubah<?php echo $row['kd_pembayaran'];?>">
                             Ubah
                             </button>
    
-        <div class="modal fade" id="Modalubah<?php echo $row['kd_ruang'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="Modalubah<?php echo $row['kd_pembayaran'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit ruang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit Pembayaran</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-            <form method="POST" action="ruang/edit_ruang.php" enctype="multipart/form-data" >
+            <form method="POST" action="pembayaran/edit_pembayaran.php" enctype="multipart/form-data" >
             
                         <section class="base align-items-center ">
 
-
+                        <div class="row mb-3">
+                        <label for="kd_pembayaran" class="col-sm-2 col-form-label">Kode Pembayaran</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_pembayaran']; ?>" name="kd_pembayaran"  autofocus="" required="" />
+                        </div>
+                        </div>
 
                         <div class="row mb-3">
-                        <div class="col-sm-8">
-                        <input type="hidden" class="form-control" value="<?php echo $row['kd_ruang']; ?>" name="kd_ruang"  autofocus="" required="" />
+                        <label for="Nama" class="col-sm-2 col-form-label">Kode Petugas</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_petugas']; ?>" name="kd_petugas" autofocus="" required="" />
                         </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
-                        <div class="col-sm-8">
-                        <input type="text" class="form-control" value="<?php echo $row['nama_ruang']; ?>" name="nama_ruang" autofocus="" required="" />
+                        <label for="Alamat" class="col-sm-2 col-form-label">Kode Pasien</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
                         </div>
                         </div>
 
-
+                        
 
                         <div class="row mb-3">
-                            <label class="col-sm-3"> Nama Gedung</label>
-                            <div class="input-group col-sm-8">
-                                <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="nama_gedung" required="" >
-                                <option selected><?php echo $row['nama_gedung']; ?></option> 
-                                <option value=""></option> 
-                                <option value="Machdor">Machdor</option>
-                                <option value="HJ Djuanda">HJ Djuanda</option>
-                                <option value="KH Masduki">KH Masduki</option>
-                                </select>
-                                <div class="input-group-append">
-                            </div>
-                            </div>
-                            </div>
+                        <label for="jmlh_harga" class="col-sm-2 col-form-label">Total Harga</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['jmlh_harga']; ?>" name="jmlh_harga" required="" />
+                        </div>
+                        </div>
+
+
+           
 
                         </section>
                         
@@ -391,11 +398,11 @@
 
 
 
-        <div class="modal fade" id="Modalliat<?php echo $row['kd_ruang'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="Modalliat<?php echo $row['kd_pembayaran'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Lihat ruang</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Lihat pembayaran</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -405,30 +412,38 @@
             
                         <section class="base align-items-center ">
                         <div>
-                            <input type="hidden" value="<?php echo $row['kd_ruang']; ?>" name="kd_ruang" required="" />
+                            <input type="hidden" value="<?php echo $row['kd_pembayaran']; ?>" name="kd_pembayaran" required="" />
                         </div>
                         <div class="row mb-3">
-                        <label for="kode" class="col-sm-3 col-form-label">Kode</label>
-                        <div class="col-sm-8">
-                        <h5>  <?php echo $row['kd_ruang']; ?></h5>
+                        <label for="kode" class="col-sm-2 col-form-label">Kode Pembayaran</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_pembayaran']; ?>" name="kd_pembayaran" autofocus="" required="" />
                         </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
-                        <div class="col-sm-8">
-                        <h5>  <?php echo $row['nama_ruang']; ?></h5>
+                        <label for="Nama" class="col-sm-2 col-form-label">Kode Petugas</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_petugas']; ?>" name="kd_petugas" autofocus="" required="" />
                         </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Alamat" class="col-sm-3 col-form-label">Nama Gedung</label>
-                        <div class="col-sm-8">
-                        <h5>  <?php echo $row['nama_gedung']; ?></h5>
-                       </div>
+                        <label for="Alamat" class="col-sm-2 col-form-label">Kode Pasien</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
+                        </div>
                         </div>
 
                         
+
+                        <div class="row mb-3">
+                        <label for="jmlh_harga" class="col-sm-2 col-form-label">Total Harga</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" value="<?php echo $row['jmlh_harga']; ?>" name="jmlh_harga" required="" />
+                        </div>
+                        </div>
+
            
 
                         </section>
@@ -443,7 +458,7 @@
         </div>
 
                                         |
-                                            <a href="ruang/hapus_ruang.php?id=<?php echo $row['kd_ruang']; ?>" onclick="return confirm('Anda yakin akan menghapus data ini?')">Hapus</a>
+                                            <a href="pembayaran/hapus_pembayaran.php?id=<?php echo $row['kd_pembayaran']; ?>" onclick="return confirm('Anda yakin akan menghapus data ini?')">Hapus</a>
                                         </td>
                                     </tr>
                                         

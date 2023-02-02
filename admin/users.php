@@ -1,31 +1,6 @@
 <?php
   include('../koneksi.php'); 
-  session_start();
-  
-
-  // mengecek apakah di url ada nilai GET id
-  if (isset($_GET['iduser'])) {
-    // ambil nilai id dari url dan dpasswordmpan dalam variabel $id
-    $id = ($_GET["iduser"]);
-
-    // menampilkan data dari database yang mempunyai id=$id
-    $query = "SELECT * FROM users WHERE iduser='$id'";
-    $result = mysqli_query($kon, $query);
-    // jika data gagal diambil maka akan tampil error berikut
-    if(!$result){
-      die ("Query Error: ".mysqli_errno($kon).
-         " - ".mysqli_error($kon));
-    }
-    // mengambil data dari database
-    $data = mysqli_fetch_assoc($result);
-      // apabila data tidak ada pada database maka akan dijalankan perintah ini
-//        if (!count($data)) {
-//           echo "<script>alert('Data tidak ditemukan pada database');window.location='../anggota.php';</script>";
-//        }
-//   } else {
-//     // apabila tidak ada data GET id pada akan di redirect ke index.php
-//     echo "<script>alert('Masukkan data id.');window.location='../anggota.php';</script>";
-  }         
+  session_start();       
   ?>
 
 <!DOCTYPE html>
@@ -39,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sistem Informasi & Registrasi PKL- Dashboard</title>
+    <title>Sistem Informasi Pelayanan Rumah Sakit - User</title>
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -66,7 +41,7 @@
             <div class="sidebar-brand-icon">
                 <img src="../assets/img/faviconumc.png" alt="" width="43" height="45" class="d-inline-block align-text-top">
             </div>
-            <div class="sidebar-brand-text mx-3">SI & Reg PKL </div>
+            <div class="sidebar-brand-text mx-3">SI Rumah Sakit </div>
         </a>
 
         <!-- Divider -->
@@ -87,49 +62,51 @@
             Data
         </div>
         
+        
         <!-- Nav Item - Tables -->
-        <li class="nav-item">
-            <a class="nav-link" href="mahasiswa.php">
+        <li class="nav-item ">
+            <a class="nav-link" href="pasien.php">
                 <i class="fas fa-fw fa-user"></i>
-                <span>Mahasiswa</span></a>
+                <span>Pasien</span></a>
         </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="pembimbing.php">
+                <a class="nav-link" href="dokter.php">
                     <i class="fas fa-fw fa-user-graduate"></i>
-                    <span>Pembimbing</span></a>
+                    <span>Dokter</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="instansi.php">
+                <a class="nav-link" href="petugas.php">
                     <i class="fas fa-fw fa-landmark"></i>
-                    <span>Instansi</span></a>
+                    <span>Petugas</span></a>
             </li>
         <!-- Nav Item - Pages Collapse Menu -->
 
-        <li class="nav-item">
-                    <a class="nav-link" href="data_peserta.php">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Peserta PKL</span></a>
-                </li>
+                <li class="nav-item ">
+                            <a class="nav-link" href="ruang.php">
+                                <i class="fas fa-fw fa-clipboard-check"></i>
+                                <span>Ruang</span></a>
+                        </li>
             <!-- Divider -->
-        <hr class="sidebar-divider">
+                <hr class="sidebar-divider">
 
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Kelola
-        </div>
-            <li class="nav-item">
-                    <a class="nav-link" href="daftar.php">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Kelola
+                </div>
+
+                <li class="nav-item ">
+                    <a class="nav-link " href="pembayaran.php">
                         <i class="fas fa-fw fa-clipboard-check"></i>
-                        <span>Pengajuan PKL</span></a>
+                        <span>Pembayaran</span></a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="pengumuman.php">
-                        <i class="fas fa-fw fa-bell"></i>
-                        <span>Pengumuman</span></a>
+                    <a class="nav-link " href="rawat.php">
+                        <i class="fas fa-fw fa-clipboard-check"></i>
+                        <span>Rawat inap</span></a>
                 </li>
 
                 <li class="nav-item active">

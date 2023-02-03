@@ -316,7 +316,7 @@
                                     </tfoot>
                                     <tbody>
                                     <?php
-                                    $query = "SELECT * FROM pembayaran INNER JOIN petugas ON pembayaran.kd_petugas = petugas.kd_petugas INNER JOIN pasien ON pembayaran.kd_pasien = pasien.kd_pasien INNER JOIN dokter ON pasien.kd_dokter = dokter.kd_dokter ORDER BY kd_pembayaran ASC";
+                                    $query = "SELECT * FROM pembayaran INNER JOIN petugas ON pembayaran.kd_petugas = petugas.kd_petugas INNER JOIN pasien ON pembayaran.kd_pasien = pasien.kd_pasien INNER JOIN dokter ON pasien.kd_dokter = dokter.kd_dokter ORDER BY kd_pembayaran DESC";
                                     $result = mysqli_query($kon, $query);
 
                                     if(!$result){

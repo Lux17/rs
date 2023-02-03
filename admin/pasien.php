@@ -332,7 +332,7 @@
                                     <?php
                            
 
-                                    $query = "SELECT p.kd_pasien,p.nama_pasien,p.alamat_pasien,p.keluhan,p.kd_dokter,p.tgl_datang,d.nama_dokter,d.spesialisasi,p.jk FROM pasien p INNER JOIN dokter d ON d.kd_dokter=p.kd_dokter";
+                                    $query = "SELECT p.kd_pasien,p.nama_pasien,p.alamat_pasien,p.keluhan,p.kd_dokter,p.tgl_datang,d.nama_dokter,d.spesialisasi,p.jk FROM pasien p INNER JOIN dokter d ON d.kd_dokter=p.kd_dokter ORDER BY kd_pasien DESC";
                                     $result = mysqli_query($kon, $query);
 
                                     if(!$result){

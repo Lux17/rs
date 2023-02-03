@@ -266,7 +266,7 @@
                                                         </div>
                   
                             <div class="row mb-3">
-                            <label for="jmlh_harga" class="col-sm-3 col-form-label">Total Harga</label>
+                            <label for="jmlh_harga" class="col-sm-3 col-form-label">Total Biaya</label>
                             <div class="col-sm-8">
                             <input type="text" class="form-control" name="jmlh_harga" placeholder="Rp." />
                             </div>
@@ -293,7 +293,7 @@
                                         <th>Dokter</th>
                                         <th>Spesialis</th>
                                         <th>Petugas</th>
-                                        <th>Total Harga</th>
+                                        <th>Total Biaya</th>
                                             
                                         
                                             <th></th>
@@ -309,7 +309,7 @@
                                         <th>Dokter</th>
                                         <th>Spesialis</th>
                                         <th>Petugas</th>
-                                        <th>Total Harga</th>
+                                        <th>Total Biaya</th>
                                             
                                             
                                         </tr>
@@ -395,7 +395,7 @@
                                                         </div>
                   
                             <div class="row mb-3">
-                            <label for="jmlh_harga" class="col-sm-3 col-form-label">Total Harga</label>
+                            <label for="jmlh_harga" class="col-sm-3 col-form-label">Total Biaya</label>
                             <div class="col-sm-8">
                             <input type="text" class="form-control" name="jmlh_harga" placeholder="Rp." />
                             </div>
@@ -482,7 +482,7 @@
                        </div>
                         </div>
                         <div class="row mb-3">
-                        <label for="Alamat" class="col-sm-3 col-form-label">Harga</label>
+                        <label for="Alamat" class="col-sm-3 col-form-label">Biaya</label>
                         <div class="col-sm-8">
                         <h5>  Rp.  <?php  echo $row['jmlh_harga']; ?></h5>
                        </div>

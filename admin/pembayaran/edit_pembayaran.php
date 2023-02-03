@@ -12,7 +12,7 @@ include 'koneksi.php';
   
  
  
-  $query  = "UPDATE pembayaran SET kd_petugas = '$kd_petugas', jmlh_harga = '$jmlh_harga', kd_pembayaran = '$kd_pembayaran', kd_pasien = '$kd_pasien'";
+  $query  = "UPDATE pembayaran SET kd_petugas = '$kd_petugas', jmlh_harga = '$jmlh_harga', kd_pasien = '$kd_pasien'";
   $query .= "WHERE kd_pembayaran = '$kd_pembayaran'";
   $result = mysqli_query($kon, $query);
   // periska query apakah ada error

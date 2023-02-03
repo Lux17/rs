@@ -467,6 +467,11 @@
                             <div class="input-group col-sm-8">
                                 <select class="custom-select" id="kd_ruang" name="kd_ruang" required="" >
                                 <option selected value="<?=$row['kd_ruang']?>"><?=$row['nama_ruang']?></option> 
+                                <option value="R001">Mawar - R001</option> 
+                                <option value="R002">Melati - R002</option> 
+                                <option value="R003">Anggrek - R003</option> 
+                                <option value="R004">Kamboja - R004</option> 
+                                <option value="R005">Tulip - R005</option> 
 
                                 </select>
                                 <div class="input-group-append">

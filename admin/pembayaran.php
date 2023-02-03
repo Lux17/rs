@@ -365,7 +365,7 @@
                         <section class="base align-items-center ">
                         <div class="row mb-3">
                             <div class="col-sm-8">
-                            <input type="hidden" class="form-control" name="kd_pembayaran" value="<?php echo $kodepembayaran?>"/>
+                            <input type="hidden" class="form-control" name="kd_pembayaran" value="<?php echo $row['kd_pembayaran'];?>"/>
                             </div>
                             </div>
                   
@@ -373,8 +373,7 @@
                                                         <label class="col-sm-3">Nama Pasien</label>
                                                         <div class="input-group col-sm-8">
                                                             <select class="custom-select" id="kd_pasien" name="kd_pasien" required="" >
-                                                            <option selected value="">Pilih</option> 
-
+                                                            <option selected value="<?php echo $row['kd_pasien']; ?>"><?php echo $row['nama_pasien']; ?></option> 
                                                             </select>
                                                             <div class="input-group-append">
                                                         </div>
@@ -386,8 +385,13 @@
                                                         <label class="col-sm-3">Petugas</label>
                                                         <div class="input-group col-sm-8">
                                                             <select class="custom-select" id="kd_petugas" name="kd_petugas" required="" >
-                                                            <option selected value="">Pilih</option> 
- 
+                                                            <option selected value="<?=$row['kd_petugas']?>"><?=$row['nama_petugas']?></option> 
+                                                            <option value="E001">Abdul - E001</option> 
+                                                            <option value="E002">Rey - E002</option> 
+                                                            <option value="E003">Hendra - E003</option> 
+                                                            <option value="E004">Jainal - E004</option> 
+                                                            <option value="E005">Maharani - E005</option> 
+
                                                             </select>
                                                             <div class="input-group-append">
                                                         </div>
@@ -397,7 +401,7 @@
                             <div class="row mb-3">
                             <label for="jmlh_harga" class="col-sm-3 col-form-label">Total Biaya</label>
                             <div class="col-sm-8">
-                            <input type="text" class="form-control" name="jmlh_harga" placeholder="Rp." />
+                            <input type="text" class="form-control" name="jmlh_harga" placeholder="Rp."  value="<?php echo $row['jmlh_harga']; ?>"/>
                             </div>
                             </div>
 

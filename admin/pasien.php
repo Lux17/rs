@@ -30,7 +30,7 @@
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<link href="../assets/img/faviconumc.png" rel="icon">
+<link href="../assets/img/favicon.png" rel="icon">
 <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
@@ -51,7 +51,7 @@
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php">
             <div class="sidebar-brand-icon">
-                <img src="../assets/img/faviconumc.png" alt="" width="43" height="45" class="d-inline-block align-text-top">
+                <img src="../assets/img/favicon.png" alt="" width="43" height="45" class="d-inline-block align-text-top">
             </div>
             <div class="sidebar-brand-text mx-3">SI Rumah Sakit </div>
         </a>
@@ -69,35 +69,35 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
         
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Data
-        </div>
-        
-        <!-- Nav Item - Tables -->
-        <li class="nav-item active">
-            <a class="nav-link" href="pasien.php">
-                <i class="fas fa-fw fa-user"></i>
-                <span>Pasien</span></a>
-        </li>
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Data
+            </div>
+            
+            <!-- Nav Item - Tables -->
+            <li class="nav-item active">
+                <a class="nav-link" href="pasien.php">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Pasien</span></a>
+            </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="dokter.php">
-                    <i class="fas fa-fw fa-user-graduate"></i>
+                    <i class="fas fa-fw fa-user-md"></i>
                     <span>Dokter</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="petugas.php">
-                    <i class="fas fa-fw fa-landmark"></i>
+                    <i class="fas fa-fw fa-user-nurse"></i>
                     <span>Petugas</span></a>
             </li>
         <!-- Nav Item - Pages Collapse Menu -->
 
                 <li class="nav-item">
                             <a class="nav-link" href="ruang.php">
-                                <i class="fas fa-fw fa-clipboard-check"></i>
+                                <i class="fas fa-fw fa-clinic-medical"></i>
                                 <span>Ruang</span></a>
                         </li>
             <!-- Divider -->
@@ -110,13 +110,13 @@
 
                 <li class="nav-item ">
                     <a class="nav-link " href="pembayaran.php">
-                        <i class="fas fa-fw fa-clipboard-check"></i>
+                        <i class="fas fa-fw fa-receipt"></i>
                         <span>Pembayaran</span></a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link " href="rawat.php">
-                        <i class="fas fa-fw fa-clipboard-check"></i>
+                        <i class="fas fa-fw fa-procedures"></i>
                         <span>Rawat inap</span></a>
                 </li>
 
@@ -257,7 +257,19 @@
                             <input type="text" class="form-control" name="nama_pasien" autofocus="" required=""  />
                         </div>
                     </div>
-                    
+                    <div class="row mb-3">
+                            <label class="col-sm-3">JK</label>
+                            <div class="input-group col-sm-8">
+                                <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="jk" required="" >
+                                <option selected value="">Pilih</option> 
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option  value="Perempuan">Perempuan</option>
+                                </select>
+                                <div class="input-group-append">
+                            </div>
+                            </div>
+                            </div>
+
                             <div class="row mb-3">
                             <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
                             <div class="col-sm-8">
@@ -316,8 +328,9 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Kode Pasien</th>
+                                            <th>Kode</th>
                                             <th>Nama</th>
+                                            <th>Jenis Kelamin</th>
                                             <th>Alamat</th>
                                             <th>TGL Datang</th>
                                             <th>Keluhan</th>
@@ -330,8 +343,9 @@
                                     <tfoot>
                                         <tr>
                                         <th>No</th>
-                                            <th>Kode Pasien</th>
+                                            <th>Kode</th>
                                             <th>Nama</th>
+                                            <th>Jenis Kelamin</th>
                                             <th>Alamat</th>
                                             <th>TGL Datang</th>
                                             <th>Keluhan</th>
@@ -343,7 +357,7 @@
                                     <?php
                            
                                     // jalankan query untuk menampilkan semua data diurutkan berdasarkan 
-                                    $query = "SELECT p.kd_pasien,p.nama_pasien,p.alamat_pasien,p.keluhan,p.kd_dokter,p.tgl_datang,d.nama_dokter,d.spesialisasi FROM pasien p INNER JOIN dokter d ON d.kd_dokter=p.kd_dokter";
+                                    $query = "SELECT p.kd_pasien,p.nama_pasien,p.alamat_pasien,p.keluhan,p.kd_dokter,p.tgl_datang,d.nama_dokter,d.spesialisasi,p.jk FROM pasien p INNER JOIN dokter d ON d.kd_dokter=p.kd_dokter";
                                     $result = mysqli_query($kon, $query);
                                     //mengecek apakah ada error ketika menjalankan query
                                     if(!$result){
@@ -362,6 +376,7 @@
                                         <td><?php echo $no; ?></td>
                                         <td><?php echo $row['kd_pasien']; ?></td>
                                         <td><?php echo $row['nama_pasien']; ?></td>
+                                        <td><?php echo $row['jk']; ?></td>
                                         <td><?php echo substr($row['alamat_pasien'], 0, 20); ?>...</td>
                                         <td><?php echo $row['tgl_datang']; ?></td>
                                         <td><?php echo $row['keluhan']; ?></td>
@@ -404,6 +419,19 @@
                         <input type="text" class="form-control" value="<?php echo $row['nama_pasien']; ?>" name="nama_pasien" autofocus="" required="" />
                         </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-3"> JK</label>
+                            <div class="input-group col-sm-8">
+                                <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" name="jk" >
+                                    <option selected ><?php echo $row['jk']; ?></option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option  value="Perempuan">Perempuan</option>
+                                </select>
+                                <div class="input-group-append">
+                            </div>
+                            </div>
+                            </div>
 
                         <div class="row mb-3">
                         <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
@@ -535,6 +563,12 @@
                         <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
                         <div class="col-sm-8">
                         <h5>  <?php echo $row['nama_pasien']; ?></h5>
+                        </div>
+                        </div>
+                        <div class="row mb-3">
+                        <label for="Alamat" class="col-sm-3 col-form-label">Jenis Kelamin</label>
+                        <div class="col-sm-8">
+                        <h5> <?php echo $row['jk']; ?></h5>
                         </div>
                         </div>
 

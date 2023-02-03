@@ -28,7 +28,7 @@
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<link href="../assets/img/faviconumc.png" rel="icon">
+<link href="../assets/img/favicon.png" rel="icon">
 <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
@@ -49,7 +49,7 @@
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php">
             <div class="sidebar-brand-icon">
-                <img src="../assets/img/faviconumc.png" alt="" width="43" height="45" class="d-inline-block align-text-top">
+                <img src="../assets/img/favicon.png" alt="" width="43" height="45" class="d-inline-block align-text-top">
             </div>
             <div class="sidebar-brand-text mx-3">SI Rumah Sakit </div>
         </a>
@@ -67,35 +67,35 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
         
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Data
-        </div>
-        
-        <!-- Nav Item - Tables -->
-        <li class="nav-item ">
-            <a class="nav-link" href="pasien.php">
-                <i class="fas fa-fw fa-user"></i>
-                <span>Pasien</span></a>
-        </li>
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Data
+            </div>
+            
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="pasien.php">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Pasien</span></a>
+            </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="dokter.php">
-                    <i class="fas fa-fw fa-user-graduate"></i>
+                    <i class="fas fa-fw fa-user-md"></i>
                     <span>Dokter</span></a>
             </li>
 
             <li class="nav-item active">
                 <a class="nav-link" href="petugas.php">
-                    <i class="fas fa-fw fa-landmark"></i>
+                    <i class="fas fa-fw fa-user-nurse"></i>
                     <span>Petugas</span></a>
             </li>
         <!-- Nav Item - Pages Collapse Menu -->
 
                 <li class="nav-item">
                             <a class="nav-link" href="ruang.php">
-                                <i class="fas fa-fw fa-clipboard-check"></i>
+                                <i class="fas fa-fw fa-clinic-medical"></i>
                                 <span>Ruang</span></a>
                         </li>
             <!-- Divider -->
@@ -108,13 +108,13 @@
 
                 <li class="nav-item ">
                     <a class="nav-link " href="pembayaran.php">
-                        <i class="fas fa-fw fa-clipboard-check"></i>
+                        <i class="fas fa-fw fa-receipt"></i>
                         <span>Pembayaran</span></a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link " href="rawat.php">
-                        <i class="fas fa-fw fa-clipboard-check"></i>
+                        <i class="fas fa-fw fa-procedures"></i>
                         <span>Rawat inap</span></a>
                 </li>
 

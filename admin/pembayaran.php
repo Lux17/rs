@@ -1,6 +1,17 @@
 <?php
   include('koneksi.php'); 
   session_start();   
+  $query = mysqli_query($kon, "SELECT max(kd_pembayaran) as kode_pembayaran FROM pembayaran");
+  $data = mysqli_fetch_array($query);
+  $kodepembayaran = $data['kode_pembayaran'];
+
+  $urutan = (int) substr($kodepembayaran, 3, 3);
+
+  $urutan++;
+
+  $huruf = "I";
+  $kodepembayaran= $huruf . sprintf("%03s", $urutan);
+
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +29,7 @@
 
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<link href="../assets/img/faviconumc.png" rel="icon">
+<link href="../assets/img/favicon.png" rel="icon">
 <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">
@@ -39,7 +50,7 @@
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php">
             <div class="sidebar-brand-icon">
-                <img src="../assets/img/faviconumc.png" alt="" width="43" height="45" class="d-inline-block align-text-top">
+                <img src="../assets/img/favicon.png" alt="" width="43" height="45" class="d-inline-block align-text-top">
             </div>
             <div class="sidebar-brand-text mx-3">SI Rumah Sakit </div>
         </a>
@@ -56,36 +67,35 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider">
-        
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Data
-        </div>
-        
-        <!-- Nav Item - Tables -->
-        <li class="nav-item ">
-            <a class="nav-link" href="pasien.php">
-                <i class="fas fa-fw fa-user"></i>
-                <span>Pasien</span></a>
-        </li>
+             <!-- Heading -->
+             <div class="sidebar-heading">
+                Data
+            </div>
+            
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="pasien.php">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Pasien</span></a>
+            </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="dokter.php">
-                    <i class="fas fa-fw fa-user-graduate"></i>
+                    <i class="fas fa-fw fa-user-md"></i>
                     <span>Dokter</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="petugas.php">
-                    <i class="fas fa-fw fa-landmark"></i>
+                    <i class="fas fa-fw fa-user-nurse"></i>
                     <span>Petugas</span></a>
             </li>
         <!-- Nav Item - Pages Collapse Menu -->
 
                 <li class="nav-item">
                             <a class="nav-link" href="ruang.php">
-                                <i class="fas fa-fw fa-clipboard-check"></i>
+                                <i class="fas fa-fw fa-clinic-medical"></i>
                                 <span>Ruang</span></a>
                         </li>
             <!-- Divider -->
@@ -98,13 +108,13 @@
 
                 <li class="nav-item active">
                     <a class="nav-link " href="pembayaran.php">
-                        <i class="fas fa-fw fa-clipboard-check"></i>
+                        <i class="fas fa-fw fa-receipt"></i>
                         <span>Pembayaran</span></a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link " href="rawat.php">
-                        <i class="fas fa-fw fa-clipboard-check"></i>
+                        <i class="fas fa-fw fa-procedures"></i>
                         <span>Rawat inap</span></a>
                 </li>
 
@@ -112,8 +122,7 @@
                     <a class="nav-link" href="users.php">
                         <i class="fas fa-fw fa-user-circle"></i>
                         <span>Akun</span></a>
-                </li>
-
+                </li>   
         <!-- Nav Item - Charts -->
 
         
@@ -232,30 +241,80 @@
             <form method="POST" action="pembayaran/tambah_pembayaran.php" enctype="multipart/form-data" >
                         <section class="base align-items-center ">
                             <div class="row mb-3">
-                            <label for="kd_pembayaran" class="col-sm-2 col-form-label">Kode pembayaran</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" name="kd_pembayaran" />
+                            <div class="col-sm-8">
+                            <input type="hidden" class="form-control" name="kd_pembayaran" value="<?php echo $kodepembayaran?>"/>
                             </div>
                             </div>
                   
                             <div class="row mb-3">
-                            <label for="kd_petugas" class="col-sm-2 col-form-label">Kode Petugas</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" name="kd_petugas" autofocus="" required=""  />
-                        </div>
-                    </div>
-                    
-                            <div class="row mb-3">
-                            <label for="kd_pasien" class="col-sm-2 col-form-label">Kode Pasien</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" name="kd_pasien" required="" />
-                            </div>
-                            </div>
+                                                        <label class="col-sm-3">Nama Pasien</label>
+                                                        <div class="input-group col-sm-8">
+                                                            <select class="custom-select" id="kd_pasien" name="kd_pasien" required="" >
+                                                            <option selected value="">Pilih</option> 
+                                                            <?php 
+                                                                $query = "SELECT * FROM pasien ORDER BY kd_pasien DESC";
+                                                                $result = mysqli_query($kon, $query);
+                                                                //mengecek apakah ada error ketika menjalankan query
+                                                                if(!$result){
+                                                                    die ("Query Error: ".mysqli_errno($kon).
+                                                                    " - ".mysqli_error($kon));
+                                                                }
+                            
+                                                                //buat perulangan untuk element tabel dari data rawatinap
+                                                                $no = 1; //variabel untuk membuat nomor urut
+                                                                // hasil query akan disimpan dalam variabel $data dalam bentuk array
+                                                                // kemudian dicetak dengan perulangan while
+                                                                while($row = mysqli_fetch_assoc($result))
+                                                                {
+                                                            // $koderawat= $data['kode_rawat'];
+                                                            ?>
+                                                            <option value="<?=$row['kd_pasien']?>"><?=$row['nama_pasien']?> - <?=$row['alamat_pasien']?></option>
+                                                            <?php
+                                                               };
+                                                            ?> 
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                        </div>
+                                                        </div>
+                                                        </div>
+
+
+                                                        <div class="row mb-3">
+                                                        <label class="col-sm-3">Petugas</label>
+                                                        <div class="input-group col-sm-8">
+                                                            <select class="custom-select" id="kd_petugas" name="kd_petugas" required="" >
+                                                            <option selected value="">Pilih</option> 
+                                                            <?php 
+                                                                $query = "SELECT * FROM petugas ORDER BY kd_petugas DESC";
+                                                                $result = mysqli_query($kon, $query);
+                                                                //mengecek apakah ada error ketika menjalankan query
+                                                                if(!$result){
+                                                                    die ("Query Error: ".mysqli_errno($kon).
+                                                                    " - ".mysqli_error($kon));
+                                                                }
+                            
+                                                                //buat perulangan untuk element tabel dari data rawatinap
+                                                                $no = 1; //variabel untuk membuat nomor urut
+                                                                // hasil query akan disimpan dalam variabel $data dalam bentuk array
+                                                                // kemudian dicetak dengan perulangan while
+                                                                while($row = mysqli_fetch_assoc($result))
+                                                                {
+                                                            // $koderawat= $data['kode_rawat'];
+                                                            ?>
+                                                            <option value="<?=$row['kd_petugas']?>"><?=$row['nama_petugas']?> - <?=$row['kd_petugas']?></option>
+                                                            <?php
+                                                               };
+                                                            ?> 
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                        </div>
+                                                        </div>
+                                                        </div>
                   
                             <div class="row mb-3">
-                            <label for="jmlh_harga" class="col-sm-2 col-form-label">Total Harga</label>
-                            <div class="col-sm-10">
-                            <input type="text" class="form-control" name="jmlh_harga" />
+                            <label for="jmlh_harga" class="col-sm-3 col-form-label">Total Harga</label>
+                            <div class="col-sm-8">
+                            <input type="text" class="form-control" name="jmlh_harga" placeholder="Rp." />
                             </div>
                             </div>
                   
@@ -276,11 +335,15 @@
         </div>
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Kode pembayaran</th>
-                                            <th>Kode Petugas</th>
-                                            <th>Kode Pasien</th>
-                                            <th>Total Harga</th>
+                                        <th>No</th>
+                                        <th>Kode pembayaran</th>
+                                        <th>Nama</th>
+                                        <th>Alamat</th>
+                                        <th>Keluhan</th>
+                                        <th>Dokter</th>
+                                        <th>Spesialis</th>
+                                        <th>Petugas</th>
+                                        <th>Total Harga</th>
                                             
                                         
                                             <th></th>
@@ -290,9 +353,13 @@
                                         <tr>
                                         <th>No</th>
                                         <th>Kode pembayaran</th>
-                                            <th>Kode Petugas</th>
-                                            <th>Kode Pasien</th>
-                                            <th>Total Harga</th>
+                                        <th>Nama</th>
+                                        <th>Alamat</th>
+                                        <th>Keluhan</th>
+                                        <th>Dokter</th>
+                                        <th>Spesialis</th>
+                                        <th>Petugas</th>
+                                        <th>Total Harga</th>
                                             
                                             
                                         </tr>
@@ -301,7 +368,7 @@
                                     <?php
                            
                                     // jalankan query untuk menampilkan semua data diurutkan berdasarkan 
-                                    $query = "SELECT * FROM pembayaran ORDER BY kd_pembayaran ASC";
+                                    $query = "SELECT * FROM pembayaran INNER JOIN petugas ON pembayaran.kd_petugas = petugas.kd_petugas INNER JOIN pasien ON pembayaran.kd_pasien = pasien.kd_pasien INNER JOIN dokter ON pasien.kd_dokter = dokter.kd_dokter ORDER BY kd_pembayaran ASC";
                                     $result = mysqli_query($kon, $query);
                                     //mengecek apakah ada error ketika menjalankan query
                                     if(!$result){
@@ -319,14 +386,14 @@
                                     <tr>
                                         <td><?php echo $no; ?></td>
                                         <td><?php echo $row['kd_pembayaran']; ?></td>
-                                        <td><?php echo $row['kd_petugas']; ?></td>
-                                        <td><?php echo substr($row['kd_pasien'], 0, 20); ?>...</td>
+                                        <td><?php echo $row['nama_pasien']; ?></td>
+                                        <td><?php echo substr($row['alamat_pasien'], 0, 20); ?>...</td>
+                                        <td><?php echo $row['keluhan']; ?></td>
+                                        <td><?php echo $row['nama_dokter']; ?></td>
+                                        <td><?php echo $row['spesialisasi']; ?></td>
+                                        <td><?php echo $row['nama_petugas']; ?></td>
                                         <td><?php echo $row['jmlh_harga']; ?></td>
                                         
-                                       
-                                
-                                        
-
                                         <td>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modalliat<?php echo $row['kd_pembayaran'];?>">
                             Lihat
@@ -350,36 +417,43 @@
             <form method="POST" action="pembayaran/edit_pembayaran.php" enctype="multipart/form-data" >
             
                         <section class="base align-items-center ">
-
                         <div class="row mb-3">
-                        <label for="kd_pembayaran" class="col-sm-2 col-form-label">Kode Pembayaran</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $row['kd_pembayaran']; ?>" name="kd_pembayaran"  autofocus="" required="" />
-                        </div>
-                        </div>
+                            <div class="col-sm-8">
+                            <input type="hidden" class="form-control" name="kd_pembayaran" value="<?php echo $kodepembayaran?>"/>
+                            </div>
+                            </div>
+                  
+                            <div class="row mb-3">
+                                                        <label class="col-sm-3">Nama Pasien</label>
+                                                        <div class="input-group col-sm-8">
+                                                            <select class="custom-select" id="kd_pasien" name="kd_pasien" required="" >
+                                                            <option selected value="">Pilih</option> 
 
-                        <div class="row mb-3">
-                        <label for="Nama" class="col-sm-2 col-form-label">Kode Petugas</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $row['kd_petugas']; ?>" name="kd_petugas" autofocus="" required="" />
-                        </div>
-                        </div>
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                        </div>
+                                                        </div>
+                                                        </div>
 
-                        <div class="row mb-3">
-                        <label for="Alamat" class="col-sm-2 col-form-label">Kode Pasien</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
-                        </div>
-                        </div>
 
-                        
-
-                        <div class="row mb-3">
-                        <label for="jmlh_harga" class="col-sm-2 col-form-label">Total Harga</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $row['jmlh_harga']; ?>" name="jmlh_harga" required="" />
-                        </div>
-                        </div>
+                                                        <div class="row mb-3">
+                                                        <label class="col-sm-3">Petugas</label>
+                                                        <div class="input-group col-sm-8">
+                                                            <select class="custom-select" id="kd_petugas" name="kd_petugas" required="" >
+                                                            <option selected value="">Pilih</option> 
+ 
+                                                            </select>
+                                                            <div class="input-group-append">
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                  
+                            <div class="row mb-3">
+                            <label for="jmlh_harga" class="col-sm-3 col-form-label">Total Harga</label>
+                            <div class="col-sm-8">
+                            <input type="text" class="form-control" name="jmlh_harga" placeholder="Rp." />
+                            </div>
+                            </div>
 
 
            
@@ -414,35 +488,60 @@
                         <div>
                             <input type="hidden" value="<?php echo $row['kd_pembayaran']; ?>" name="kd_pembayaran" required="" />
                         </div>
+
                         <div class="row mb-3">
-                        <label for="kode" class="col-sm-2 col-form-label">Kode Pembayaran</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $row['kd_pembayaran']; ?>" name="kd_pembayaran" autofocus="" required="" />
+                        <label for="kode" class="col-sm-3 col-form-label">Kode</label>
+                        <div class="col-sm-8">
+                        <h5>  <?php echo $row['kd_pembayaran']; ?></h5>
                         </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Nama" class="col-sm-2 col-form-label">Kode Petugas</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $row['kd_petugas']; ?>" name="kd_petugas" autofocus="" required="" />
+                        <label for="Nama" class="col-sm-3 col-form-label">Nama</label>
+                        <div class="col-sm-8">
+                        <h5>  <?php echo $row['nama_pasien']; ?></h5>
                         </div>
                         </div>
 
                         <div class="row mb-3">
-                        <label for="Alamat" class="col-sm-2 col-form-label">Kode Pasien</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
-                        </div>
+                        <label for="Alamat" class="col-sm-3 col-form-label">Alamat</label>
+                        <div class="col-sm-8">
+                        <h5>  <?php echo $row['alamat_pasien']; ?></h5>
+                       </div>
                         </div>
 
+                        <div class="row mb-3">
+                        <label for="Alamat" class="col-sm-3 col-form-label">Keluhan</label>
+                        <div class="col-sm-8">
+                        <h5>  <?php echo $row['keluhan']; ?></h5>
+                       </div>
+                        </div>
+
+                        <div class="row mb-3">
+                        <label for="Alamat" class="col-sm-3 col-form-label">Dokter</label>
+                        <div class="col-sm-8">
+                        <h5>  <?php echo $row['nama_dokter']; ?></h5>
+                       </div>
+                        </div>
+                        <div class="row mb-3">
+                        <label for="Alamat" class="col-sm-3 col-form-label">Spesialis</label>
+                        <div class="col-sm-8">
+                        <h5>  <?php echo $row['spesialisasi']; ?></h5>
+                       </div>
+                        </div>
+                        <div class="row mb-3">
+                        <label for="Alamat" class="col-sm-3 col-form-label">Petugas</label>
+                        <div class="col-sm-8">
+                        <h5>  <?php echo $row['nama_petugas']; ?></h5>
+                       </div>
+                        </div>
+                        <div class="row mb-3">
+                        <label for="Alamat" class="col-sm-3 col-form-label">Harga</label>
+                        <div class="col-sm-8">
+                        <h5>  Rp.  <?php  echo $row['jmlh_harga']; ?></h5>
+                       </div>
+                        </div>
                         
-
-                        <div class="row mb-3">
-                        <label for="jmlh_harga" class="col-sm-2 col-form-label">Total Harga</label>
-                        <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?php echo $row['jmlh_harga']; ?>" name="jmlh_harga" required="" />
-                        </div>
-                        </div>
 
            
 

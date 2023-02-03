@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2023 at 08:11 PM
+-- Generation Time: Feb 03, 2023 at 05:23 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -60,6 +60,7 @@ CREATE TABLE `pasien` (
   `kd_pasien` varchar(16) NOT NULL,
   `nama_pasien` varchar(150) NOT NULL,
   `alamat_pasien` varchar(200) NOT NULL,
+  `jk` varchar(16) NOT NULL,
   `tgl_datang` date NOT NULL,
   `keluhan` varchar(200) NOT NULL,
   `kd_dokter` varchar(16) NOT NULL
@@ -69,11 +70,11 @@ CREATE TABLE `pasien` (
 -- Dumping data for table `pasien`
 --
 
-INSERT INTO `pasien` (`kd_pasien`, `nama_pasien`, `alamat_pasien`, `tgl_datang`, `keluhan`, `kd_dokter`) VALUES
-('P001', 'Lucky', '    Mundu', '2023-02-02', 'Sakit Kepala    ', 'D002'),
-('P002', 'Habi', '       Bandengan', '2023-02-16', 'Dada Sesak  ', 'D001'),
-('P003', 'Nining', '    Bandengan', '2023-02-14', ' Batuk   ', 'D003'),
-('P004', 'Lucky', ' Mundu', '2023-02-16', ' Sakit Telinga', 'D005');
+INSERT INTO `pasien` (`kd_pasien`, `nama_pasien`, `alamat_pasien`, `jk`, `tgl_datang`, `keluhan`, `kd_dokter`) VALUES
+('P001', 'Lucky', '      Mundu', 'Laki-laki', '2023-02-02', 'Sakit Kepala      ', 'D002'),
+('P002', 'Habi', '       Bandengan', 'Laki-laki', '2023-02-16', 'Dada Sesak  ', 'D001'),
+('P003', 'Nining', '    Bandengan', 'Perempuan', '2023-02-14', ' Batuk   ', 'D003'),
+('P004', 'Lucky', ' Mundu', 'Laki-laki', '2023-02-16', ' Sakit Telinga', 'D005');
 
 -- --------------------------------------------------------
 
@@ -93,7 +94,8 @@ CREATE TABLE `pembayaran` (
 --
 
 INSERT INTO `pembayaran` (`kd_pembayaran`, `kd_petugas`, `kd_pasien`, `jmlh_harga`) VALUES
-('I001', 'E001', 'P001', 1500000);
+('I001', 'E003', 'P001', 170000),
+('I002', 'E004', 'P003', 1000000);
 
 -- --------------------------------------------------------
 
@@ -136,7 +138,9 @@ CREATE TABLE `rawat_inap` (
 --
 
 INSERT INTO `rawat_inap` (`kd_rawatinap`, `kd_ruang`, `kd_pasien`) VALUES
-('RI001', 'R001', 'P001');
+('RI001', 'R003', 'P001'),
+('RI002', 'R002', 'P002'),
+('RI003', 'R002', 'P001');
 
 -- --------------------------------------------------------
 
@@ -156,7 +160,10 @@ CREATE TABLE `ruang` (
 
 INSERT INTO `ruang` (`kd_ruang`, `nama_ruang`, `nama_gedung`) VALUES
 ('R001', 'Mawar', 'HJ Djuanda'),
-('R002', 'Melati', 'KH Masduki');
+('R002', 'Melati', 'KH Masduki'),
+('R003', 'Anggrek', 'Zainal Mustofa'),
+('R004', 'Kamboja', 'Machdor'),
+('R005', 'Tulip', 'Zainal Mustofa');
 
 -- --------------------------------------------------------
 
@@ -237,7 +244,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `iduser` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `iduser` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

@@ -8,7 +8,7 @@ session_start();
 
 // cek nis
 if (isset($_POST['simpan'])) {
-    $nim = $_POST['kd_ruang'];
+    $kd_ruang = $_POST['kd_ruang'];
    
     $query = mysqli_query($kon, "SELECT kd_ruang FROM ruang WHERE kd_ruang = '$kd_ruang'"); 
    
@@ -28,7 +28,7 @@ if (isset($_POST['simpan'])) {
         
         if(!$result){
             die ("Query gagal dijalankan: ".mysqli_errno($kon).
-                                               " - ".mysqli_error($kon));
+        " - ".mysqli_error($kon));
         } else {                      
         echo "<script>alert('Data berhasil ditambah.');window.location='../ruang.php';</script>";
         };               

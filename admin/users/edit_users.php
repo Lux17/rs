@@ -13,10 +13,10 @@ include 'koneksi.php';
   $query  = "UPDATE users SET username = '$username', password = sha1('$password'), rolename = '$rolename'";
   $query .= "WHERE iduser = '$id'";
   $result = mysqli_query($kon, $query);
-                    // periska query apakah ada error
+  // periska query apakah ada error
   if(!$result){
       die ("Query gagal dijalankan: ".mysqli_errno($kon).
-                                         " - ".mysqli_error($kon));
+          " - ".mysqli_error($kon));
   } else {                      
   echo "<script>alert('Data berhasil diubah.');window.location='../users.php';</script>";
   }

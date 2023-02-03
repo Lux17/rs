@@ -9,16 +9,13 @@ include 'koneksi.php';
   $jam_jaga = isset($_POST['jam_jaga']) ? $_POST['jam_jaga'] : '';
 
 
-  
- 
- 
   $query  = "UPDATE petugas SET nama_petugas = '$nama_petugas', jam_jaga = '$jam_jaga', alamat_petugas = '$alamat_petugas'";
   $query .= "WHERE kd_petugas = '$kd_petugas'";
   $result = mysqli_query($kon, $query);
-                    // periska query apakah ada error
+// periska query apakah ada error
   if(!$result){
       die ("Query gagal dijalankan: ".mysqli_errno($kon).
-                                         " - ".mysqli_error($kon));
+          " - ".mysqli_error($kon));
   } else {                      
   echo "<script>alert('Data berhasil diubah.');window.location='../petugas.php';</script>";
   }

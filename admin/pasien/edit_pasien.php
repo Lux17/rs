@@ -18,10 +18,10 @@ include 'koneksi.php';
   $query  = "UPDATE pasien SET nama_pasien = '$nama_pasien', jk = '$jk', tgl_datang = '$tgl_datang', keluhan = '$keluhan', alamat_pasien = '$alamat_pasien', kd_dokter = '$kd_dokter'";
   $query .= "WHERE kd_pasien = '$kd_pasien'";
   $result = mysqli_query($kon, $query);
-                    // periska query apakah ada error
+  // periska query apakah ada error
   if(!$result){
       die ("Query gagal dijalankan: ".mysqli_errno($kon).
-                                         " - ".mysqli_error($kon));
+      " - ".mysqli_error($kon));
   } else {                      
   echo "<script>alert('Data berhasil diubah.');window.location='../pasien.php';</script>";
   }

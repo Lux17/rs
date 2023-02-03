@@ -6,9 +6,9 @@ session_start();
 
 
 
-// cek nis
+
 if (isset($_POST['simpan'])) {
-    $nim = $_POST['kd_pembayaran'];
+    $kd_pembayaran = $_POST['kd_pembayaran'];
    
     $query = mysqli_query($kon, "SELECT kd_pembayaran FROM pembayaran WHERE kd_pembayaran = '$kd_pembayaran'"); 
    

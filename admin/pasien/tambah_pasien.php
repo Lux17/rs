@@ -3,11 +3,6 @@
 include 'koneksi.php';
 session_start();	
 	
-
-	// mengambil data barang dengan kode paling besar
-
-
-// cek alamat_pasien
 $kd_pasien = isset($_POST['kd_pasien']) ? $_POST['kd_pasien'] : '';
 $nama_pasien = isset($_POST['nama_pasien']) ? $_POST['nama_pasien'] : '';
 $jk = isset($_POST['jk']) ? $_POST['jk'] : '';
@@ -19,8 +14,7 @@ $kd_dokter= isset($_POST['kd_dokter']) ? $_POST['kd_dokter'] : '';
 
 $query = "INSERT INTO pasien (kd_pasien ,nama_pasien, jk, alamat_pasien, tgl_datang, keluhan, kd_dokter) VALUES ('$kd_pasien','$nama_pasien', '$jk','$alamat_pasien', '$tgl_datang', '$keluhan', '$kd_dokter')";
 $result = mysqli_query($kon, $query);
-                  // periska query apakah ada error
-// $jumlah = mysqli_num_rows($result);
+
 
 if(!$result){
     die ("Query gagal dijalankan: ".mysqli_errno($kon).

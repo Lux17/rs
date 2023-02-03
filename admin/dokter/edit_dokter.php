@@ -15,10 +15,10 @@ include 'koneksi.php';
   $query  = "UPDATE dokter SET nama_dokter = '$nama_dokter', spesialisasi = '$spesialisasi', alamat_dokter = '$alamat_dokter'";
   $query .= "WHERE kd_dokter = '$kd_dokter'";
   $result = mysqli_query($kon, $query);
-                    // periska query apakah ada error
+  // periska query apakah ada error
   if(!$result){
       die ("Query gagal dijalankan: ".mysqli_errno($kon).
-                                         " - ".mysqli_error($kon));
+          " - ".mysqli_error($kon));
   } else {                      
   echo "<script>alert('Data berhasil diubah.');window.location='../dokter.php';</script>";
   }

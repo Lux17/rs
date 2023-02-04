@@ -450,16 +450,12 @@
 
 
                         <div class="row mb-3">
-                            <label class="col-sm-3">Nama Pasien</label>
-                            <div class="input-group col-sm-8">
-                                <select class="custom-select" id="kd_pasien" name="kd_pasien" required="" >
-                                <option selected value="<?=$row['kd_pasien']?>"><?=$row['nama_pasien']?></option>
+                            <label for="kd_pasien" class="col-sm-3 col-form-label">Kode Pasien</label>
+                            <div class="col-sm-8">
+                            <input type="text" class="form-control" value="<?php echo $row['kd_pasien']; ?>" name="kd_pasien" required="" />
+                            </div>
+                            </div>
 
-                                </select>
-                                <div class="input-group-append">
-                                </div>
-                                </div>
-                                </div>
 
 
                             <div class="row mb-3">
